@@ -1,0 +1,38 @@
+
+var EMAIL_SENT = "EMAIL_SENT";
+
+function sendEmailAE() {
+   var ss = SpreadsheetApp.getActiveSpreadsheet();
+ var sheet = SpreadsheetApp.setActiveSheet(ss.getSheets()[0]);
+  var startRow = 4;
+  var numRows = 300;   
+  var dataRange = sheet.getRange(startRow, 1, numRows, 10); 
+  var data = dataRange.getValues();
+  for (var i = 0; i < data.length; ++i) {
+    var row = data[i];
+    var status = row[6]
+    var emailSent = row[7];
+    if (status=="Occupied" && emailSent!= EMAIL_SENT){
+    var emailAddress = row[0];
+    var name = row[1];
+    var greeting = "Dear".concat(" ",name,",");
+    var mobileno = row[2]
+    var msgmobileno = "\nYour Mobile No is:".concat(" ",mobileno,".");
+    var seat = row[5];
+    var msgseat ="\nYour personal belongings have been put in".concat(" ",seat,".");
+    var passcode = row[3];
+    var msgpasscode ="\nIf you would wish to retrieve your personal belongoings,";
+    var msgpasscodecont ="\nplease use this code:".concat(passcode," or simply show this email to our working helper for identification");
+    var msgthx="\nYours sincerely, ";
+    var msgthxcont="\nLa Salle College Student Association Data Management Team";
+    var msgblank="\n ";
+    var message = greeting.concat(msgblank,msgmobileno,msgseat,msgpasscode,msgpasscodecont,msgblank,msgthx,msgthxcont)
+      var subject = "La Salle College Christmas Ball 2016 Cloakroom E-mail Notification"; //set subject of email
+      GmailApp.sendEmail(emailAddress, subject, message,{name: 'La Salle College Student Association',replyTo:'lscsafc1617@gmail.com'});
+      sheet.getRange(startRow + i,8).setValue(EMAIL_SENT);
+      SpreadsheetApp.flush()
+  }if (status=="Vacant") {
+}
+}
+
+}
